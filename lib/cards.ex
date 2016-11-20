@@ -10,7 +10,7 @@ defmodule Cards do
     #     end
     # List.flatten(cards)
 
-    for suit <- suits, value <- values do
+        for suit <- suits, value <- values do
             "#{value} of #{suit}"
         end
     end
@@ -32,4 +32,16 @@ defmodule Cards do
         File.write(filename, binary)
     end
 
+    def load(filename) do
+        case File.read(filename) do
+            {:ok, binary} -> :erlang.binary_to_term(binary)
+            {:error, _reason} -> "File does not exists"
+        end
+    end
+
+    def create_hand(hand_size) do
+        Cards.create_deck
+        |> Cards.shuffle
+        |> Cards.deal(hand_size)
+    end
 end
